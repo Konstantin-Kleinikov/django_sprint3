@@ -1,0 +1,3 @@
+<a class="text-muted" href="{% url 'blog:category_posts' post.category.slug|default_if_none:'' %}">
+  «{{ post.category.title }}»
+</a>
