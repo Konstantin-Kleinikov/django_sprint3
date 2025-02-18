@@ -22,6 +22,7 @@ class PostInLine(admin.TabularInline):
     )
 
 
+@admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     inlines = (
         PostInLine,
@@ -45,6 +46,7 @@ class CategoryAdmin(admin.ModelAdmin):
     )
 
 
+@admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
     inlines = (
         PostInLine,
@@ -61,6 +63,7 @@ class LocationAdmin(admin.ModelAdmin):
     list_filter = ('is_published',)
 
 
+@admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = (
         'title',
@@ -94,8 +97,3 @@ class PostAdmin(admin.ModelAdmin):
         'category',
         'is_published'
     )
-
-
-admin.site.register(Category, CategoryAdmin)
-admin.site.register(Location, LocationAdmin)
-admin.site.register(Post, PostAdmin)
