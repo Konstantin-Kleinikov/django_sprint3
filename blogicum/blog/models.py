@@ -1,13 +1,15 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
-from core.models import CreatedPublishedModel, PostModel
+from core.models import CreatedPublishedModel, TitleModel
+
+from .constants import NAME_DISPLAY_LENGTH
 
 
 User = get_user_model()
 
 
-class Category(PostModel):
+class Category(TitleModel):
     description = models.TextField('Описание')
     slug = models.SlugField(
         'Идентификатор',
@@ -34,10 +36,10 @@ class Location(CreatedPublishedModel):
         verbose_name_plural = 'Местоположения'
 
     def __str__(self):
-        return self.name[:30]
+        return self.name[:NAME_DISPLAY_LENGTH]
 
 
-class Post(PostModel):
+class Post(TitleModel):
     text = models.TextField('Текст')
     pub_date = models.DateTimeField(
         'Дата и время публикации',
@@ -67,5 +69,6 @@ class Post(PostModel):
 
     class Meta:
         ordering = ["-pub_date"]
+        default_related_name = 'post_posts'
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'

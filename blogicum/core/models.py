@@ -1,5 +1,7 @@
 from django.db import models
 
+from .constants import TITLE_DISPLAY_LENGTH
+
 
 class CreatedPublishedModel(models.Model):
     created_at = models.DateTimeField(
@@ -16,7 +18,7 @@ class CreatedPublishedModel(models.Model):
         abstract = True
 
 
-class PostModel(CreatedPublishedModel):
+class TitleModel(CreatedPublishedModel):
     title = models.CharField(
         'Заголовок',
         max_length=256
@@ -24,7 +26,6 @@ class PostModel(CreatedPublishedModel):
 
     class Meta:
         abstract = True
-        default_related_name = '%(class)s_posts'
 
     def __str__(self):
-        return self.title[:30]
+        return self.title[:TITLE_DISPLAY_LENGTH]

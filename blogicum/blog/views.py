@@ -6,35 +6,23 @@ from .models import (
     Category,
     Post,
 )
+
 from .constants import NUMBER_OF_ROWS
 
 
-def get_filtered_posts(post_id: int = None) -> QuerySet[Post]:
-    """Возвращает QuerySet отфильтрованных записей блогов.
-
-    Параметры:
-            post_id (int): номер записи блога
-    """
-    if post_id:
-        return get_object_or_404(
-            Post,
-            pk=post_id,
-            is_published=True,
-            category__is_published=True,
-            pub_date__lte=timezone.now(),
-        )
-    else:
-        return (Post.objects.select_related(
-            'author',
-            'location',
-            'category',
-        )
-            .filter(
-            is_published=True,
-            category__is_published=True,
-            pub_date__lte=timezone.now(),
-        )
-        )
+def get_filtered_posts() -> QuerySet[Post]:
+    """Возвращает QuerySet отфильтрованных записей блогов."""
+    return (Post.objects.select_related(
+        'author',
+        'location',
+        'category',
+    )
+        .filter(
+        is_published=True,
+        category__is_published=True,
+        pub_date__lte=timezone.now(),
+    )
+    )
 
 
 def index(request):
@@ -54,7 +42,10 @@ def post_detail(request, post_id: int):
     Параметры:
             post_id (int): номер записи блога
     """
-    post = get_filtered_posts(post_id)
+    post = get_object_or_404(
+        get_filtered_posts(),
+        pk=post_id
+    )
 
     return render(request, 'blog/detail.html', {'post': post})
 
